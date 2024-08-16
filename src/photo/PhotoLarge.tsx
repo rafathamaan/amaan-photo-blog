@@ -363,7 +363,7 @@ export default function PhotoLarge({
         setIsHovered(entry.isIntersecting);
       },
       {
-        threshold: 0.1, // Adjust as needed
+        threshold: 1.5, // Adjust as needed
       }
     );
 
@@ -400,15 +400,12 @@ export default function PhotoLarge({
               ref={imgRef}
               className={clsx(
                 'transition-transform ease-in-out duration-400',
-                isHovered ? 'scale-110 shadow-glow brightness-125 saturate-150 contrast-125 blur-sm backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
+                isHovered ? 'scale-110 shadow-glow brightness-125 backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
               )}
             >
               <ImageLarge
                 className={clsx(
                   arePhotosMatted && 'h-full',
-                  'transition ease-in-out duration-500',
-                  'hover:scale-105',
-                  'hover:shadow-glow',
                 )}
                 imgClassName={clsx(
                   arePhotosMatted && 'object-contain w-full h-full'
