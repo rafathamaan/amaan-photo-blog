@@ -1,3 +1,4 @@
+'use client';
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import ImageLarge from '@/components/image/ImageLarge'; // Ensure correct import path
