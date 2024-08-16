@@ -118,7 +118,8 @@ export default function PhotoLarge({
               : 'h-[90%]',
           )}>
             <ImageLarge
-              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-250','hover:scale-105 hover:drop-shadow-xl')}
+              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-350','hover:scale-102','hover:shadow-glow', // Apply glow shadow on hover
+              'hover:filter hover:brightness-525')}
               imgClassName={clsx(arePhotosMatted &&
                 'object-contain w-full h-full')}
               alt={altTextForPhoto(photo)}
