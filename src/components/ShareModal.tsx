@@ -95,17 +95,14 @@
 'use client';
 
 import Modal from '@/components/Modal';
-import { TbPhotoShare } from 'react-icons/tb';
 import { clsx } from 'clsx/lite';
 import { BiCopy } from 'react-icons/bi';
 import { ReactNode } from 'react';
 import { shortenUrl } from '@/utility/url';
 import { toastSuccess } from '@/toast';
-import { PiXLogo } from 'react-icons/pi';
 import { SHOW_SOCIAL } from '@/site/config';
 import { generateWhatsAppShareText } from '@/utility/social';
 import { PiWhatsappLogoFill } from "react-icons/pi";
-
 
 export default function ShareModal({
   pathShare,
@@ -128,7 +125,6 @@ export default function ShareModal({
         'py-3 px-3.5',
         embedded ? 'border-l' : 'border rounded-md',
         'border-gray-200 bg-gray-50 active:bg-gray-100',
-        // eslint-disable-next-line max-len
         'dark:border-gray-800 dark:bg-gray-900/75 dark:hover:bg-gray-800/75 dark:active:bg-gray-900',
         'cursor-pointer',
       )}

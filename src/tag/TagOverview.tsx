@@ -25,7 +25,6 @@ export default function TagOverview({
         tag,
         photos,
         count,
-        dateRange,
       }} />,
       animateOnFirstLoadOnly,
     }} />
