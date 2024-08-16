@@ -30,15 +30,15 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: SITE_TITLE,
+  title: 'Arif Group',
   description: SITE_DESCRIPTION,
   ...BASE_URL && { metadataBase: new URL(BASE_URL) },
   openGraph: {
-    title: SITE_TITLE,
+    title: 'Arif Group',
     description: SITE_DESCRIPTION,
   },
   twitter: {
-    title: SITE_TITLE,
+    title: 'Arif Group',
     description: SITE_DESCRIPTION,
   },
   icons: [{
