@@ -14,7 +14,7 @@ export default function PhotoFeedPage({
   photosCount: number
 }) {
   return (
-    <div className="space-y-1">
+    <div className='space-y-1 flex w-full h-full transition-transform duration-300 ease-in-out transform group-hover:scale-110 '>
       <PhotosLarge {...{ photos }} />
       {photosCount > photos.length &&
         <PhotosLargeInfinite
