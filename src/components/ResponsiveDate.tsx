@@ -14,6 +14,6 @@ export default function ResponsiveDate({
     ? `${titleLabel}: ${formatDate(date).toLocaleUpperCase()}`
     : formatDate(date).toLocaleUpperCase();
   return (
-    ('hello')
+    ('Shot By Arif Fabrication Works')
   );
 }
