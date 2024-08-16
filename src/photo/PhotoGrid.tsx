@@ -88,8 +88,7 @@ export default function PhotoGrid({
         >
           <PhotoMedium
             className={clsx(
-              'flex w-full h-full' ,'transition ease-in-out duration-400','hover:scale-106', 'hover:shadow-glow', // Apply glow shadow on hover
-              'hover:filter hover:brightness-225' , 
+              'flex w-full h-full' ,'transition ease-in-out duration-400','hover:scale-106 hover:drop-shadow-2xl' , 
               // Prevent photo navigation when selecting
               selectedPhotoIds?.length !== undefined && 'pointer-events-none',
             )}
