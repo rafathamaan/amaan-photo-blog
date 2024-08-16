@@ -220,14 +220,14 @@ export default function PhotoLarge({
               'flex gap-x-2 gap-y-baseline',
               'md:flex-col md:justify-normal',
             )}>
-              {/* <PhotoDate
+              <PhotoDate
                 photo={photo}
                 className={clsx(
                   'text-medium',
                   // Prevent date collision with admin button
                   !hasNonDateContent && isUserSignedIn && 'md:pr-7',
                 )}
-              /> */}
+              />
               {shouldShare &&
                 <ShareButton
                   className={clsx(

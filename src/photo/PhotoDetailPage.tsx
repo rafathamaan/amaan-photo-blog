@@ -60,6 +60,7 @@ export default function PhotoDetailPage({
               selectedPhoto={photo}
               indexNumber={indexNumber}
               count={count}
+              dateRange={dateRange}
             />}
         />}
       {camera &&
@@ -72,6 +73,7 @@ export default function PhotoDetailPage({
               selectedPhoto={photo}
               indexNumber={indexNumber}
               count={count}
+              dateRange={dateRange}
             />}
         />}
       {simulation &&
@@ -84,6 +86,7 @@ export default function PhotoDetailPage({
               selectedPhoto={photo}
               indexNumber={indexNumber}
               count={count}
+              dateRange={dateRange}
             />}
         />}
       {focal &&
@@ -96,6 +99,7 @@ export default function PhotoDetailPage({
               selectedPhoto={photo}
               indexNumber={indexNumber}
               count={count}
+              dateRange={dateRange}
             />}
         />}
       <AnimateItems
