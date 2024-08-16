@@ -88,7 +88,7 @@ export default function PhotoGrid({
         >
           <PhotoMedium
             className={clsx(
-              'flex w-full h-full' ,'transition ease-in-out duration-200','hover:transform hover:scale-105 hover:rotate-y-15' , 
+              'flex w-full h-full' ,'transition ease-in-out duration-200','hover:transform hover:scale-110 hover:rotate-y-15' , 
               // Prevent photo navigation when selecting
               selectedPhotoIds?.length !== undefined && 'pointer-events-none',
             )}
