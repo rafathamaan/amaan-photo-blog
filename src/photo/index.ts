@@ -189,7 +189,7 @@ export const translatePhotoId = (id: string) =>
   PHOTO_ID_FORWARDING_TABLE[id] || id;
 
 export const titleForPhoto = (photo: Photo) =>
-  photo.title || 'Untitled';
+  photo.title || 'Arif Group Design';
 
 export const altTextForPhoto = (photo: Photo) =>
   photo.semanticDescription || titleForPhoto(photo);
