@@ -55,7 +55,6 @@ export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -64,21 +63,16 @@ export default function ThemeSwitcher() {
     return null;
   }
 
+  const switcherStyle = {
+    background: theme === 'light'
+      ? 'linear-gradient(to bottom, #f7f7f7, #ffffff)'
+      : theme === 'dark'
+        ? 'linear-gradient(to bottom, #333, #444)'
+        : 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)',
+  };
+
   return (
-    <Switcher
-      style={{
-        background: theme === 'light'
-          ? 'rgba(255, 255, 255, 0.5)' // Light theme background with transparency
-          : theme === 'dark'
-          ? 'rgba(51, 51, 51, 0.5)'   // Dark theme background with transparency
-          : 'rgba(240, 240, 240, 0.5)', // Default background with transparency
-        backdropFilter: 'blur(10px)',   // Apply blur effect
-        WebkitBackdropFilter: 'blur(10px)', // For Safari support
-        borderRadius: '10px',           // Rounded corners for a smoother look
-        border: '1px solid rgba(255, 255, 255, 0.3)', // Light border to enhance the glass effect
-        padding: '1rem',                // Add some padding inside the Switcher
-      }}
-    >
+    <Switcher style={switcherStyle}>
       <SwitcherItem
         title="System"
         icon={<BiDesktop size={16} />}
@@ -95,7 +89,7 @@ export default function ThemeSwitcher() {
         title="Dark"
         icon={<BiMoon size={16} />}
         onClick={() => setTheme('dark')}
-        active={theme === 'dark')}
+        active={theme === 'dark'}
       />
     </Switcher>
   );
