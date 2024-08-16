@@ -255,11 +255,9 @@
 //     />
 //   );
 // };
-
-
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   Photo,
   altTextForPhoto,
@@ -360,19 +358,23 @@ export default function PhotoLarge({
     hasMetaContent;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const rect = imgRef.current?.getBoundingClientRect();
-      if (rect) {
-        const isInViewport = rect.top < window.innerHeight && rect.bottom >= 0;
-        setIsHovered(isInViewport);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHovered(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1, // Adjust as needed
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (imgRef.current) {
+        observer.unobserve(imgRef.current);
+      }
     };
   }, []);
 
@@ -398,7 +400,7 @@ export default function PhotoLarge({
               ref={imgRef}
               className={clsx(
                 'transition-transform ease-in-out duration-400',
-                isHovered ? 'scale-110 shadow-glow brightness-50 saturate-150 contrast-125 blur-sm backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
+                isHovered ? 'scale-110 shadow-glow brightness-125 saturate-150 contrast-125 blur-sm backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
               )}
             >
               <ImageLarge
@@ -529,9 +531,7 @@ export default function PhotoLarge({
                     photo,
                     tag: shouldShareTag ? primaryTag : undefined,
                     camera: shouldShareCamera ? camera : undefined,
-                    // eslint-disable-next-line max-len
                     simulation: shouldShareSimulation ? photo.filmSimulation : undefined,
-                    // eslint-disable-next-line max-len
                     focal: shouldShareFocalLength ? photo.focalLength : undefined,
                   })}
                   prefetch={prefetchRelatedLinks}
