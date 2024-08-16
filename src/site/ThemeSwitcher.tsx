@@ -42,7 +42,6 @@
 //     </Switcher>
 //   );
 // }
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -72,25 +71,28 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <Switcher style={switcherStyle}>
-      <SwitcherItem
-        title="System"
-        icon={<BiDesktop size={16} />}
-        onClick={() => setTheme('system')}
-        active={theme === 'system'}
-      />
-      <SwitcherItem
-        title="Light"
-        icon={<BiSun size={18} />}
-        onClick={() => setTheme('light')}
-        active={theme === 'light'}
-      />
-      <SwitcherItem
-        title="Dark"
-        icon={<BiMoon size={16} />}
-        onClick={() => setTheme('dark')}
-        active={theme === 'dark'}
-      />
-    </Switcher>
+    <div style={switcherStyle}>
+      <Switcher>
+        <SwitcherItem
+          title="System"
+          icon={<BiDesktop size={16} />}
+          onClick={() => setTheme('system')}
+          active={theme === 'system'}
+        />
+        <SwitcherItem
+          title="Light"
+          icon={<BiSun size={18} />}
+          onClick={() => setTheme('light')}
+          active={theme === 'light'}
+        />
+        <SwitcherItem
+          title="Dark"
+          icon={<BiMoon size={16} />}
+          onClick={() => setTheme('dark')}
+          active={theme === 'dark'}
+        />
+      </Switcher>
+    </div>
   );
 }
+
