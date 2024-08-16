@@ -10,9 +10,7 @@ export default function ResponsiveDate({
   className?: string
   titleLabel?: string
 }) {
-  const title = titleLabel
-    ? `${titleLabel}: ${formatDate(date).toLocaleUpperCase()}`
-    : formatDate(date).toLocaleUpperCase();
+  
   return (
     ('Shot By Arif Fabrication Works')
   );
