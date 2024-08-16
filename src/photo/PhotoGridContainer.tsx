@@ -22,7 +22,9 @@ export default function PhotoGridContainer({
 }: {
   cacheKey: string
   count: number
-  header?: JSX.Element} & ComponentProps<typeof PhotoGrid>) {
+  header?: JSX.Element
+  sidebar?: JSX.Element
+} & ComponentProps<typeof PhotoGrid>) {
   const [
     shouldAnimateDynamicItems,
     setShouldAnimateDynamicItems,
@@ -69,7 +71,8 @@ export default function PhotoGridContainer({
             }} />}
         </div>
       </div>}
-    
+      contentSide={sidebar}
+      sideHiddenOnMobile
     />
   );
 }

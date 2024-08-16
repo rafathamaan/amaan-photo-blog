@@ -35,6 +35,14 @@ export default function PhotoGridPage({
       cacheKey={`page-${PATH_GRID}`}
       photos={photos}
       count={photosCount}
+      sidebar={<div className="sticky top-4 space-y-4 mt-[-4px]">
+        <PhotoGridSidebar {...{
+          tags,
+          cameras,
+          simulations,
+          photosCount,
+        }} />
+      </div>}
       canSelect
     />
   );
