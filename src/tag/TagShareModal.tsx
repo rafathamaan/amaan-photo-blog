@@ -21,7 +21,7 @@ export default function TagShareModal({
       pathClose={pathForTag(tag)}
       socialText={shareTextForTag(tag)}
     >
-      <TagOGTile {...{ tag, photos, count }} />
+      <TagOGTile {...{ tag, photos, count, dateRange }} />
     </ShareModal>
   );
 };

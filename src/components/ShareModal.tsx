@@ -135,15 +135,6 @@ export default function ShareModal({
 
   return (
     <Modal onClosePath={pathClose}>
-      <div className="space-y-3 md:space-y-4 w-full">
-        {children}
-        <div className="flex items-center gap-2">
-          <div className={clsx(
-            'rounded-md',
-            'w-full overflow-hidden',
-            'flex items-center justify-stretch',
-            'border border-gray-200 dark:border-gray-800',
-          )}>
             <div className="truncate p-2 w-full">
               {shortenUrl(pathShare)}
             </div>

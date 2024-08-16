@@ -32,6 +32,7 @@ export default function TagHeader({
       sharePath={pathForTagShare(tag)}
       indexNumber={indexNumber}
       count={count}
+      dateRange={dateRange}
     />
   );
 }
