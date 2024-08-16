@@ -3,9 +3,20 @@
 @tailwind utilities;
 
 
-.img:hover {
-  transform: scale(1.5); /* Scale up the image on hover */
-  z-index: 10; /* Bring the image to the front */
+
+body {
+  background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(10px);           /* Apply blur effect */
+  -webkit-backdrop-filter: blur(10px);  /* For Safari support */
+  color: #333;                          /* Text color */
+  min-height: 100vh;                    /* Ensure full viewport height */
+}
+
+#root, .app-container {
+  /* Ensure the glass effect covers the entire app */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 @layer base {
   /* Core */
