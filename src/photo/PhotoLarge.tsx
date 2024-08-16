@@ -259,7 +259,7 @@
 
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   Photo,
   altTextForPhoto,
@@ -332,6 +332,7 @@ export default function PhotoLarge({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const tags = sortTags(photo.tags, primaryTag);
   const camera = cameraFromPhoto(photo);
@@ -361,15 +362,14 @@ export default function PhotoLarge({
   useEffect(() => {
     const handleScroll = () => {
       const rect = imgRef.current?.getBoundingClientRect();
-      if (rect && rect.top < window.innerHeight && rect.bottom >= 0) {
-        imgRef.current?.classList.add('hovered');
-      } else {
-        imgRef.current?.classList.remove('hovered');
+      if (rect) {
+        const isInViewport = rect.top < window.innerHeight && rect.bottom >= 0;
+        setIsHovered(isInViewport);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on mount
+    handleScroll(); // Initial check
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -398,15 +398,7 @@ export default function PhotoLarge({
               ref={imgRef}
               className={clsx(
                 'transition-transform ease-in-out duration-400',
-                'hover:scale-110',
-                'hover:shadow-glow',
-                'hover:brightness-125',
-                'hover:saturate-150',
-                'hover:contrast-125',
-                'hover:blur-sm',
-                'hover:backdrop-brightness-200',
-                'hover:backdrop-blur-2xl',
-                'hover:filter',
+                isHovered ? 'scale-110 shadow-glow brightness-50 saturate-150 contrast-125 blur-sm backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
               )}
             >
               <ImageLarge
@@ -550,4 +542,4 @@ export default function PhotoLarge({
         </DivDebugBaselineGrid>}
     />
   );
-}
+};
