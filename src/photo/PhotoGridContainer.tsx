@@ -1,40 +1,75 @@
 'use client';
 
-import { Tags } from '@/tag';
-import { Photo } from '.';
-import { Cameras } from '@/camera';
-import { FilmSimulations } from '@/simulation';
-import { PATH_GRID } from '@/site/paths';
-import PhotoGridContainer from './PhotoGridContainer';
-import { useEffect } from 'react';
-import { useAppState } from '@/state/AppState';
+import SiteGrid from '@/components/SiteGrid';
+import PhotoGrid from './PhotoGrid';
+import PhotoGridInfinite from './PhotoGridInfinite';
+import { clsx } from 'clsx/lite';
+import AnimateItems from '@/components/AnimateItems';
+import { ComponentProps, useCallback, useState } from 'react';
 
-export default function PhotoGridPage({
+export default function PhotoGridContainer({
+  cacheKey,
   photos,
-  photosCount,
-  tags,
-  cameras,
-  simulations,
+  count,
+  tag,
+  camera,
+  simulation,
+  focal,
+  animateOnFirstLoadOnly,
+  header,
+  sidebar,
+  canSelect,
 }: {
-  photos: Photo[];
-  photosCount: number;
-  tags: Tags;
-  cameras: Cameras;
-  simulations: FilmSimulations;
-}) {
-  const { setSelectedPhotoIds } = useAppState();
+  cacheKey: string
+  count: number
+  header?: JSX.Element} & ComponentProps<typeof PhotoGrid>) {
+  const [
+    shouldAnimateDynamicItems,
+    setShouldAnimateDynamicItems,
+  ] = useState(false);
 
-  useEffect(
-    () => () => setSelectedPhotoIds?.(undefined),
-    [setSelectedPhotoIds]
-  );
+  const onAnimationComplete = useCallback(() =>
+    setShouldAnimateDynamicItems(true), []);
+
+  const initialOffset = photos.length;
 
   return (
-    <PhotoGridContainer
-      cacheKey={`page-${PATH_GRID}`}
-      photos={photos}
-      count={photosCount}
-      canSelect
+    <SiteGrid
+      contentMain={<div className={clsx(
+        header && 'space-y-8 mt-4',
+      )}>
+        {header &&
+          <AnimateItems
+            type="bottom"
+            items={[header]}
+            animateOnFirstLoadOnly
+          />}
+        <div className="space-y-0.5 sm:space-y-1">
+          <PhotoGrid {...{
+            photos,
+            tag,
+            camera,
+            simulation,
+            focal,
+            animateOnFirstLoadOnly,
+            onAnimationComplete,
+            canSelect,
+          }} />
+          {count > initialOffset &&
+            <PhotoGridInfinite {...{
+              cacheKey,
+              initialOffset,
+              canStart: shouldAnimateDynamicItems,
+              tag,
+              camera,
+              simulation,
+              focal,
+              animateOnFirstLoadOnly,
+              canSelect,
+            }} />}
+        </div>
+      </div>}
+    
     />
   );
 }
