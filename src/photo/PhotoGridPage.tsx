@@ -49,7 +49,7 @@
 // }
 
 import { Photo } from '.';
-import { PhotoGridContainer } from './PhotoGridContainer';
+import PhotoGridContainer  from './PhotoGridContainer';
 
 export default function PhotoGridPage({
   photos,
