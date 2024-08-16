@@ -118,11 +118,12 @@ export default function PhotoLarge({
               : 'h-[90%]',
           )}>
             <ImageLarge
-              className={clsx(arePhotosMatted && 'h-full')}
+              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-200','hover:transform hover:scale-105 hover:rotate-y-3')}
               imgClassName={clsx(arePhotosMatted &&
                 'object-contain w-full h-full')}
               alt={altTextForPhoto(photo)}
               src={photo.url}
+              
               aspectRatio={photo.aspectRatio}
               blurDataURL={photo.blurData}
               blurCompatibilityMode={doesPhotoNeedBlurCompatibility(photo)}
