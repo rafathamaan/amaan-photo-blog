@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 // import {
 //   Photo,
@@ -257,9 +257,9 @@
 // };
 
 
+'use client';
 
-
-import ImageWithScrollEffect from '@/photo/ImageWithScrollEffect'; // Ensure correct import path
+import { useRef, useEffect } from 'react';
 import {
   Photo,
   altTextForPhoto,
@@ -269,7 +269,8 @@ import {
   titleForPhoto,
 } from '.';
 import SiteGrid from '@/components/SiteGrid';
-import clsx from 'clsx';
+import ImageLarge from '@/components/image/ImageLarge';
+import { clsx } from 'clsx';
 import Link from 'next/link';
 import {
   pathForFocalLength,
@@ -290,7 +291,6 @@ import {
 } from '@/site/config';
 import AdminPhotoMenuClient from '@/admin/AdminPhotoMenuClient';
 import { RevalidatePhoto } from './InfinitePhotoScroll';
-import { useRef } from 'react';
 import useOnVisible from '@/utility/useOnVisible';
 import PhotoDate from './PhotoDate';
 import { useAppState } from '@/state/AppState';
@@ -313,27 +313,27 @@ export default function PhotoLarge({
   includeFavoriteInAdminMenu,
   onVisible,
 }: {
-  photo: Photo;
-  primaryTag?: string;
-  priority?: boolean;
-  prefetch?: boolean;
-  prefetchRelatedLinks?: boolean;
-  revalidatePhoto?: RevalidatePhoto;
-  showCamera?: boolean;
-  showSimulation?: boolean;
-  shouldShare?: boolean;
-  shouldShareTag?: boolean;
-  shouldShareCamera?: boolean;
-  shouldShareSimulation?: boolean;
-  shouldShareFocalLength?: boolean;
-  shouldScrollOnShare?: boolean;
-  includeFavoriteInAdminMenu?: boolean;
-  onVisible?: () => void;
+  photo: Photo
+  primaryTag?: string
+  priority?: boolean
+  prefetch?: boolean
+  prefetchRelatedLinks?: boolean
+  revalidatePhoto?: RevalidatePhoto
+  showCamera?: boolean
+  showSimulation?: boolean
+  shouldShare?: boolean
+  shouldShareTag?: boolean
+  shouldShareCamera?: boolean
+  shouldShareSimulation?: boolean
+  shouldShareFocalLength?: boolean
+  shouldScrollOnShare?: boolean
+  includeFavoriteInAdminMenu?: boolean
+  onVisible?: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   const tags = sortTags(photo.tags, primaryTag);
-
   const camera = cameraFromPhoto(photo);
 
   const showCameraContent = showCamera && shouldShowCameraDataForPhoto(photo);
@@ -358,6 +358,24 @@ export default function PhotoLarge({
     hasTitleContent ||
     hasMetaContent;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const rect = imgRef.current?.getBoundingClientRect();
+      if (rect && rect.top < window.innerHeight && rect.bottom >= 0) {
+        imgRef.current?.classList.add('hovered');
+      } else {
+        imgRef.current?.classList.remove('hovered');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check on mount
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <SiteGrid
       containerRef={ref}
@@ -365,16 +383,52 @@ export default function PhotoLarge({
         <Link
           href={pathForPhoto({ photo })}
           className={clsx(
-            arePhotosMatted && 'flex items-center aspect-[3/2] bg-gray-100'
+            arePhotosMatted && 'flex items-center aspect-[3/2] bg-gray-100',
           )}
           prefetch={prefetch}
         >
-          <ImageWithScrollEffect
-            photo={photo}
-            priority={priority}
-          />
-        </Link>
-      }
+          <div className={clsx(
+            arePhotosMatted &&
+              'flex items-center justify-center w-full',
+            arePhotosMatted && photo.aspectRatio >= 1
+              ? 'h-[80%]'
+              : 'h-[90%]',
+          )}>
+            <div
+              ref={imgRef}
+              className={clsx(
+                'transition-transform ease-in-out duration-400',
+                'hover:scale-110',
+                'hover:shadow-glow',
+                'hover:brightness-125',
+                'hover:saturate-150',
+                'hover:contrast-125',
+                'hover:blur-sm',
+                'hover:backdrop-brightness-200',
+                'hover:backdrop-blur-2xl',
+                'hover:filter',
+              )}
+            >
+              <ImageLarge
+                className={clsx(
+                  arePhotosMatted && 'h-full',
+                  'transition ease-in-out duration-500',
+                  'hover:scale-105',
+                  'hover:shadow-glow',
+                )}
+                imgClassName={clsx(
+                  arePhotosMatted && 'object-contain w-full h-full'
+                )}
+                alt={altTextForPhoto(photo)}
+                src={photo.url}
+                aspectRatio={photo.aspectRatio}
+                blurDataURL={photo.blurData}
+                blurCompatibilityMode={doesPhotoNeedBlurCompatibility(photo)}
+                priority={priority}
+              />
+            </div>
+          </div>
+        </Link>}
       contentSide={
         <DivDebugBaselineGrid className={clsx(
           'relative',
@@ -483,7 +537,9 @@ export default function PhotoLarge({
                     photo,
                     tag: shouldShareTag ? primaryTag : undefined,
                     camera: shouldShareCamera ? camera : undefined,
+                    // eslint-disable-next-line max-len
                     simulation: shouldShareSimulation ? photo.filmSimulation : undefined,
+                    // eslint-disable-next-line max-len
                     focal: shouldShareFocalLength ? photo.focalLength : undefined,
                   })}
                   prefetch={prefetchRelatedLinks}
@@ -491,8 +547,7 @@ export default function PhotoLarge({
                 />}
             </div>
           </div>
-        </DivDebugBaselineGrid>
-      }
+        </DivDebugBaselineGrid>}
     />
   );
 }
