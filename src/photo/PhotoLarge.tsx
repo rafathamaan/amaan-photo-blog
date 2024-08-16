@@ -363,7 +363,7 @@ export default function PhotoLarge({
         setIsHovered(entry.isIntersecting);
       },
       {
-        threshold: .6, // Adjust as needed
+        threshold: .8, // Adjust as needed
       }
     );
 
