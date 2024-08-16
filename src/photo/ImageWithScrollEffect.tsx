@@ -2,7 +2,14 @@
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import ImageLarge from '@/components/image/ImageLarge'; // Ensure correct import path
-
+import {
+  Photo,
+  altTextForPhoto,
+  doesPhotoNeedBlurCompatibility,
+  shouldShowCameraDataForPhoto,
+  shouldShowExifDataForPhoto,
+  titleForPhoto,
+} from '.';
 interface ImageComponentProps {
   photo: Photo;
   priority?: boolean;
