@@ -58,9 +58,9 @@ export default async function Share({
   ] = await getPhotosTagDataCachedCached(tag);
 
   return <>
-    <TagShareModal {...{ tag, photos, count, dateRange }} />
+    <TagShareModal {...{ tag, photos, count }} />
     <TagOverview
-      {...{ tag, photos, count, dateRange }}
+      {...{ tag, photos, count }}
       animateOnFirstLoadOnly
     />
   </>;
