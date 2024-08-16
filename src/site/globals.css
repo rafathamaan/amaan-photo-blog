@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* global.css */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
 @layer base {
   /* Core */
   body {
