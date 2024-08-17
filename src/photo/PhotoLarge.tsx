@@ -289,9 +289,10 @@ import {
 import AdminPhotoMenuClient from '@/admin/AdminPhotoMenuClient';
 import { RevalidatePhoto } from './InfinitePhotoScroll';
 import { useRef, useState } from 'react';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import useIntersectionObserver from '/Users/rafathamaan/Downloads/amaanf/src/photo/useIntersectionObserver';
 import PhotoDate from './PhotoDate';
 import { useAppState } from '@/state/AppState';
+import useOnVisible from '@/utility/useOnVisible';
 
 export default function PhotoLarge({
   photo,
