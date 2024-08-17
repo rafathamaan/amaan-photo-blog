@@ -378,16 +378,16 @@ export default function PhotoLarge({
         });
 
         if (closest) {
-          // Ensure closest.target is an HTMLElement
+          // Explicitly check for target and cast it
           const targetElement = closest.target as HTMLElement;
-          if (imgRef.current === targetElement) {
+          if (imgRef.current && imgRef.current === targetElement) {
             setActiveImage(targetElement);
           }
         }
       },
       {
         rootMargin: '0px',
-        threshold: .5,
+        threshold: 0.5,
       }
     );
 
@@ -427,7 +427,7 @@ export default function PhotoLarge({
               className={clsx(
                 'transition-transform ease-in-out duration-500',
                 activeImage === imgRef.current
-                  ? 'scale-105 shadow-glow  backdrop-brightness-200 backdrop-blur-2xl'
+                  ? 'scale-105 shadow-glow backdrop-brightness-200 backdrop-blur-2xl'
                   : 'scale-100'
               )}
             >
