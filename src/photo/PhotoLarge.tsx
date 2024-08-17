@@ -426,7 +426,6 @@ export default function PhotoLarge({
               'hover:filter' ,'hover:backdrop-brightness-200', 'hover:backdrop-blur-',)}
               imgClassName={clsx(arePhotosMatted &&
                 'object-contain w-full h-full')}
-              alt={altTextForPhoto(photo)}
               src={photo.url}
               aspectRatio={photo.aspectRatio}
               blurDataURL={photo.blurData}
