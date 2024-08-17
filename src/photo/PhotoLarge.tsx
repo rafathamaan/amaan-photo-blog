@@ -312,22 +312,22 @@ export default function PhotoLarge({
   includeFavoriteInAdminMenu,
   onVisible,
 }: {
-  photo: Photo
-  primaryTag?: string
-  priority?: boolean
-  prefetch?: boolean
-  prefetchRelatedLinks?: boolean
-  revalidatePhoto?: RevalidatePhoto
-  showCamera?: boolean
-  showSimulation?: boolean
-  shouldShare?: boolean
-  shouldShareTag?: boolean
-  shouldShareCamera?: boolean
-  shouldShareSimulation?: boolean
-  shouldShareFocalLength?: boolean
-  shouldScrollOnShare?: boolean
-  includeFavoriteInAdminMenu?: boolean
-  onVisible?: () => void
+  photo: Photo;
+  primaryTag?: string;
+  priority?: boolean;
+  prefetch?: boolean;
+  prefetchRelatedLinks?: boolean;
+  revalidatePhoto?: RevalidatePhoto;
+  showCamera?: boolean;
+  showSimulation?: boolean;
+  shouldShare?: boolean;
+  shouldShareTag?: boolean;
+  shouldShareCamera?: boolean;
+  shouldShareSimulation?: boolean;
+  shouldShareFocalLength?: boolean;
+  shouldScrollOnShare?: boolean;
+  includeFavoriteInAdminMenu?: boolean;
+  onVisible?: () => void;
 }) {
   const [activeImage, setActiveImage] = useState<HTMLDivElement | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -393,8 +393,9 @@ export default function PhotoLarge({
               ref={imgRef}
               className={clsx(
                 'transition-transform duration-500 ease-in-out',
-                activeImage === imgRef.current ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl',
-                : 'scale-100',
+                activeImage === imgRef.current
+                  ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl'
+                  : 'scale-100'
               )}
             >
               <ImageLarge
