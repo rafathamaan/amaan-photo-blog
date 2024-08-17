@@ -391,11 +391,10 @@ export default function PhotoLarge({
           )}>
             <div
               ref={imgRef}
-              className={clsx(
-                'transition-transform duration-500 ease-in-out',
+              className={clsx('transition ease-in-out duration-500',
                 activeImage === imgRef.current
-                  ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl'
-                  : 'scale-100'
+                  ? 'scale-110 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl'
+                  : 'scale-100',
               )}
             >
               <ImageLarge
