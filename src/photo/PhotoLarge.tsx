@@ -389,22 +389,29 @@ export default function PhotoLarge({
               ? 'h-[80%]'
               : 'h-[90%]',
           )}>
-            <ImageLarge
+            <div
               ref={imgRef}
               className={clsx(
-                arePhotosMatted && 'h-full',
                 'transition-transform duration-500 ease-in-out',
-                activeImage === imgRef.current ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl'
+                activeImage === imgRef.current ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl',
                 : 'scale-100',
               )}
-              imgClassName={clsx(arePhotosMatted && 'object-contain w-full h-full')}
-              alt={altTextForPhoto(photo)}
-              src={photo.url}
-              aspectRatio={photo.aspectRatio}
-              blurDataURL={photo.blurData}
-              blurCompatibilityMode={doesPhotoNeedBlurCompatibility(photo)}
-              priority={priority}
-            />
+            >
+              <ImageLarge
+                className={clsx(
+                  arePhotosMatted && 'h-full',
+                  'hover:scale-105 hover:shadow-glow',
+                  'hover:filter hover:backdrop-brightness-200 hover:backdrop-blur-2xl'
+                )}
+                imgClassName={clsx(arePhotosMatted && 'object-contain w-full h-full')}
+                alt={altTextForPhoto(photo)}
+                src={photo.url}
+                aspectRatio={photo.aspectRatio}
+                blurDataURL={photo.blurData}
+                blurCompatibilityMode={doesPhotoNeedBlurCompatibility(photo)}
+                priority={priority}
+              />
+            </div>
           </div>
         </Link>}
       contentSide={
