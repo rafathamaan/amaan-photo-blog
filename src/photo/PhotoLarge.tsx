@@ -255,7 +255,6 @@
 //     />
 //   );
 // };
-
 'use client';
 
 import {
@@ -289,58 +288,10 @@ import {
 } from '@/site/config';
 import AdminPhotoMenuClient from '@/admin/AdminPhotoMenuClient';
 import { RevalidatePhoto } from './InfinitePhotoScroll';
-import { useRef,useEffect,useState } from 'react';
-import useOnVisible from '@/utility/useOnVisible';
+import { useRef, useState } from 'react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import PhotoDate from './PhotoDate';
 import { useAppState } from '@/state/AppState';
-
-// Custom hook for IntersectionObserver
-const useIntersectionObserver = (onVisible?: () => void) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let closest: IntersectionObserverEntry | null = null;
-        let minDistance = Infinity;
-
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const { top, bottom } = entry.boundingClientRect;
-            const centerY = (top + bottom) / 2;
-            const viewportCenter = window.innerHeight / 2;
-            const distanceToCenter = Math.abs(viewportCenter - centerY);
-
-            if (distanceToCenter < minDistance) {
-              minDistance = distanceToCenter;
-              closest = entry;
-            }
-          }
-        });
-
-        if (closest && ref.current) {
-          onVisible?.();
-        }
-      },
-      {
-        rootMargin: '0px',
-        threshold: 0.1,
-      }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [onVisible]);
-
-  return ref;
-};
 
 export default function PhotoLarge({
   photo,
@@ -377,15 +328,31 @@ export default function PhotoLarge({
   includeFavoriteInAdminMenu?: boolean
   onVisible?: () => void
 }) {
-  const ref = useIntersectionObserver(onVisible);
+  const [activeImage, setActiveImage] = useState<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   const tags = sortTags(photo.tags, primaryTag);
-
   const camera = cameraFromPhoto(photo);
 
   const showCameraContent = showCamera && shouldShowCameraDataForPhoto(photo);
   const showTagsContent = tags.length > 0;
   const showExifContent = shouldShowExifDataForPhoto(photo);
+
+  useOnVisible(ref, onVisible);
+
+  useIntersectionObserver(imgRef, (isVisible) => {
+    if (isVisible && ref.current && imgRef.current) {
+      const { top, bottom } = imgRef.current.getBoundingClientRect();
+      const centerY = (top + bottom) / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const distanceToCenter = Math.abs(viewportCenter - centerY);
+
+      if (distanceToCenter < 50) { // Adjust the threshold as needed
+        setActiveImage(imgRef.current);
+      }
+    }
+  });
 
   const { arePhotosMatted, isUserSignedIn } = useAppState();
 
@@ -422,10 +389,14 @@ export default function PhotoLarge({
               : 'h-[90%]',
           )}>
             <ImageLarge
-              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-500','hover:scale-105','hover:shadow-glow', // Apply glow shadow on hover
-              'hover:filter' ,'hover:backdrop-brightness-200', 'hover:backdrop-blur-2xl',)}
-              imgClassName={clsx(arePhotosMatted &&
-                'object-contain w-full h-full')}
+              ref={imgRef}
+              className={clsx(
+                arePhotosMatted && 'h-full',
+                'transition-transform duration-500 ease-in-out',
+                activeImage === imgRef.current ? 'scale-105 shadow-glow brightness-25 backdrop-brightness-200 backdrop-blur-2xl'
+                : 'scale-100',
+              )}
+              imgClassName={clsx(arePhotosMatted && 'object-contain w-full h-full')}
               alt={altTextForPhoto(photo)}
               src={photo.url}
               aspectRatio={photo.aspectRatio}
@@ -529,31 +500,4 @@ export default function PhotoLarge({
                 photo={photo}
                 className={clsx(
                   'text-medium',
-                  // Prevent date collision with admin button
-                  !hasNonDateContent && isUserSignedIn && 'md:pr-7',
-                )}
-              />
-              {shouldShare &&
-                <ShareButton
-                  className={clsx(
-                    'md:translate-x-[-2.5px]',
-                    'translate-y-[1.5px] md:translate-y-0',
-                  )}
-                  path={pathForPhotoShare({
-                    photo,
-                    tag: shouldShareTag ? primaryTag : undefined,
-                    camera: shouldShareCamera ? camera : undefined,
-                    // eslint-disable-next-line max-len
-                    simulation: shouldShareSimulation ? photo.filmSimulation : undefined,
-                    // eslint-disable-next-line max-len
-                    focal: shouldShareFocalLength ? photo.focalLength : undefined,
-                  })}
-                  prefetch={prefetchRelatedLinks}
-                  shouldScroll={shouldScrollOnShare}
-                />}
-            </div>
-          </div>
-        </DivDebugBaselineGrid>}
-    />
-  );
-}
+                  // Prevent date
