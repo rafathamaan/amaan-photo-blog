@@ -1,7 +1,3 @@
-//   Photo,
-//   shouldShowCameraDataForPhoto,
-//   shouldShowExifDataForPhoto,
-//   titleForPhoto,
 'use client';
 
 import {
