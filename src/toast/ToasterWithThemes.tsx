@@ -7,8 +7,8 @@ import { Toaster ,toast} from 'sonner';
 export default function ToasterWithThemes() {
   const { theme } = useTheme();
   useEffect(() => {
-    toast.success('Welcome to our website! Please Use Search or Tags To Find The Required Images', {
-      duration: 5000, // 3 seconds
+    toast.success('Welcome to our website! Please Use Search and Select Tags To Find The Required Images', {
+      duration: 10000, // 10 seconds
     });
   }, []);
   return (
