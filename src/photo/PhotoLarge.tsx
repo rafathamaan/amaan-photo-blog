@@ -289,7 +289,7 @@ import {
 } from '@/site/config';
 import AdminPhotoMenuClient from '@/admin/AdminPhotoMenuClient';
 import { RevalidatePhoto } from './InfinitePhotoScroll';
-import { useRef } from 'react';
+import { useRef,useEffect,useState } from 'react';
 import useOnVisible from '@/utility/useOnVisible';
 import PhotoDate from './PhotoDate';
 import { useAppState } from '@/state/AppState';
