@@ -496,8 +496,35 @@ export default function PhotoLarge({
               'flex gap-x-2 gap-y-baseline',
               'md:flex-col md:justify-normal',
             )}>
-              <PhotoDate
+             <PhotoDate
                 photo={photo}
                 className={clsx(
                   'text-medium',
-                  // Prevent date
+                  // Prevent date collision with admin button
+                  !hasNonDateContent && isUserSignedIn && 'md:pr-7',
+                )}
+              />
+              {shouldShare &&
+                <ShareButton
+                  className={clsx(
+                    'md:translate-x-[-2.5px]',
+                    'translate-y-[1.5px] md:translate-y-0',
+                  )}
+                  path={pathForPhotoShare({
+                    photo,
+                    tag: shouldShareTag ? primaryTag : undefined,
+                    camera: shouldShareCamera ? camera : undefined,
+                    // eslint-disable-next-line max-len
+                    simulation: shouldShareSimulation ? photo.filmSimulation : undefined,
+                    // eslint-disable-next-line max-len
+                    focal: shouldShareFocalLength ? photo.focalLength : undefined,
+                  })}
+                  prefetch={prefetchRelatedLinks}
+                  shouldScroll={shouldScrollOnShare}
+                />}
+            </div>
+          </div>
+        </DivDebugBaselineGrid>}
+    />
+  );
+}
