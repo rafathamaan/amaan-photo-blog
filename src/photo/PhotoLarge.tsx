@@ -422,10 +422,11 @@ export default function PhotoLarge({
               : 'h-[90%]',
           )}>
             <ImageLarge
-              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-550','hover:scale-105','hover:shadow-glow',
-              'hover:filter' ,'hover:backdrop-brightness-200', 'hover:backdrop-blur-',)}
+              className={clsx(arePhotosMatted && 'h-full','transition ease-in-out duration-500','hover:scale-105','hover:shadow-glow', // Apply glow shadow on hover
+              'hover:filter' ,'hover:backdrop-brightness-200', 'hover:backdrop-blur-2xl',)}
               imgClassName={clsx(arePhotosMatted &&
                 'object-contain w-full h-full')}
+              alt={altTextForPhoto(photo)}
               src={photo.url}
               aspectRatio={photo.aspectRatio}
               blurDataURL={photo.blurData}
