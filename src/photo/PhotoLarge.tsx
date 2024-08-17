@@ -311,26 +311,26 @@ export default function PhotoLarge({
   includeFavoriteInAdminMenu,
   onVisible,
 }: {
-  photo: Photo
-  primaryTag?: string
-  priority?: boolean
-  prefetch?: boolean
-  prefetchRelatedLinks?: boolean
-  revalidatePhoto?: RevalidatePhoto
-  showCamera?: boolean
-  showSimulation?: boolean
-  shouldShare?: boolean
-  shouldShareTag?: boolean
-  shouldShareCamera?: boolean
-  shouldShareSimulation?: boolean
-  shouldShareFocalLength?: boolean
-  shouldScrollOnShare?: boolean
-  includeFavoriteInAdminMenu?: boolean
-  onVisible?: () => void
+  photo: Photo;
+  primaryTag?: string;
+  priority?: boolean;
+  prefetch?: boolean;
+  prefetchRelatedLinks?: boolean;
+  revalidatePhoto?: RevalidatePhoto;
+  showCamera?: boolean;
+  showSimulation?: boolean;
+  shouldShare?: boolean;
+  shouldShareTag?: boolean;
+  shouldShareCamera?: boolean;
+  shouldShareSimulation?: boolean;
+  shouldShareFocalLength?: boolean;
+  shouldScrollOnShare?: boolean;
+  includeFavoriteInAdminMenu?: boolean;
+  onVisible?: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [activeImage, setActiveImage] = useState<HTMLElement | null>(null);
 
   const tags = sortTags(photo.tags, primaryTag);
   const camera = cameraFromPhoto(photo);
@@ -359,11 +359,31 @@ export default function PhotoLarge({
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsHovered(entry.isIntersecting);
+      (entries) => {
+        let closest: IntersectionObserverEntry | null = null;
+        let minDistance = Infinity;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const { top, bottom } = entry.boundingClientRect;
+            const centerY = (top + bottom) / 2;
+            const viewportCenter = window.innerHeight / 2;
+            const distanceToCenter = Math.abs(viewportCenter - centerY);
+
+            if (distanceToCenter < minDistance) {
+              minDistance = distanceToCenter;
+              closest = entry;
+            }
+          }
+        });
+
+        if (closest) {
+          setActiveImage(closest.target as HTMLElement);
+        }
       },
       {
-        threshold: .8, // Adjust as needed
+        rootMargin: '0px',
+        threshold: 0.1,
       }
     );
 
@@ -385,27 +405,31 @@ export default function PhotoLarge({
         <Link
           href={pathForPhoto({ photo })}
           className={clsx(
-            arePhotosMatted && 'flex items-center aspect-[3/2] bg-gray-100',
+            arePhotosMatted && 'flex items-center aspect-[3/2] bg-gray-100'
           )}
           prefetch={prefetch}
         >
-          <div className={clsx(
-            arePhotosMatted &&
-              'flex items-center justify-center w-full',
-            arePhotosMatted && photo.aspectRatio >= 1
-              ? 'h-[80%]'
-              : 'h-[90%]',
-          )}>
+          <div
+            className={clsx(
+              arePhotosMatted &&
+                'flex items-center justify-center w-full',
+              arePhotosMatted && photo.aspectRatio >= 1
+                ? 'h-[80%]'
+                : 'h-[90%]'
+            )}
+          >
             <div
               ref={imgRef}
               className={clsx(
-                'transition-transform ease-in-out duration-400',
-                isHovered ? 'scale-110 shadow-glow brightness-125 backdrop-brightness-200 backdrop-blur-2xl' : 'scale-100',
+                'transition-transform ease-in-out duration-500',
+                activeImage === imgRef.current
+                  ? 'scale-105 shadow-glow brightness-125 backdrop-brightness-200 backdrop-blur-2xl'
+                  : 'scale-100'
               )}
             >
               <ImageLarge
                 className={clsx(
-                  arePhotosMatted && 'h-full',
+                  arePhotosMatted && 'h-full'
                 )}
                 imgClassName={clsx(
                   arePhotosMatted && 'object-contain w-full h-full'
@@ -419,72 +443,85 @@ export default function PhotoLarge({
               />
             </div>
           </div>
-        </Link>}
+        </Link>
+      }
       contentSide={
-        <DivDebugBaselineGrid className={clsx(
-          'relative',
-          'sticky top-4 self-start -translate-y-1',
-          'grid grid-cols-2 md:grid-cols-1',
-          'gap-x-0.5 sm:gap-x-1 gap-y-baseline',
-          'pb-6',
-        )}>
+        <DivDebugBaselineGrid
+          className={clsx(
+            'relative',
+            'sticky top-4 self-start -translate-y-1',
+            'grid grid-cols-2 md:grid-cols-1',
+            'gap-x-0.5 sm:gap-x-1 gap-y-baseline',
+            'pb-6'
+          )}
+        >
           {/* Meta */}
           <div className="pr-2 md:pr-0">
             <div className="md:relative flex gap-2 items-start">
-              {(photo.title || SHOW_PHOTO_TITLE_FALLBACK_TEXT) &&
+              {(photo.title || SHOW_PHOTO_TITLE_FALLBACK_TEXT) && (
                 <PhotoLink
                   photo={photo}
                   className="font-bold uppercase flex-grow"
                   prefetch={prefetch}
-                />}
+                />
+              )}
               <div className="absolute right-0 translate-y-[-4px] z-10">
-                <AdminPhotoMenuClient {...{
-                  photo,
-                  revalidatePhoto,
-                  includeFavorite: includeFavoriteInAdminMenu,
-                  ariaLabel: `Admin menu for '${titleForPhoto(photo)}' photo`,
-                }} />
+                <AdminPhotoMenuClient
+                  {...{
+                    photo,
+                    revalidatePhoto,
+                    includeFavorite: includeFavoriteInAdminMenu,
+                    ariaLabel: `Admin menu for '${titleForPhoto(photo)}' photo`,
+                  }}
+                />
               </div>
             </div>
             <div className="space-y-baseline">
-              {photo.caption &&
+              {photo.caption && (
                 <div className="uppercase">
                   {photo.caption}
-                </div>}
-              {(showCameraContent || showTagsContent) &&
+                </div>
+              )}
+              {(showCameraContent || showTagsContent) && (
                 <div>
-                  {showCameraContent &&
+                  {showCameraContent && (
                     <PhotoCamera
                       camera={camera}
                       contrast="medium"
                       prefetch={prefetchRelatedLinks}
-                    />}
-                  {showTagsContent &&
+                    />
+                  )}
+                  {showTagsContent && (
                     <PhotoTags
                       tags={tags}
                       contrast="medium"
                       prefetch={prefetchRelatedLinks}
-                    />}
-                </div>}
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
           {/* EXIF Data */}
-          <div className={clsx(
-            'space-y-baseline',
-            !hasTitleContent && 'md:-mt-baseline',
-          )}>
-            {showExifContent &&
+          <div
+            className={clsx(
+              'space-y-baseline',
+              !hasTitleContent && 'md:-mt-baseline'
+            )}
+          >
+            {showExifContent && (
               <>
                 <ul className="text-medium">
                   <li>
-                    {photo.focalLength &&
+                    {photo.focalLength && (
                       <Link
                         href={pathForFocalLength(photo.focalLength)}
                         className="hover:text-main active:text-medium"
                       >
                         {photo.focalLengthFormatted}
-                      </Link>}
-                    {photo.focalLengthIn35MmFormatFormatted &&
+                      </Link>
+                    )}
+                    {photo.focalLengthIn35MmFormatFormatted && (
                       <>
                         {' '}
                         <span
@@ -493,36 +530,41 @@ export default function PhotoLarge({
                         >
                           {photo.focalLengthIn35MmFormatFormatted}
                         </span>
-                      </>}
+                      </>
+                    )}
                   </li>
                   <li>{photo.fNumberFormatted}</li>
                   <li>{photo.exposureTimeFormatted}</li>
                   <li>{photo.isoFormatted}</li>
                   <li>{photo.exposureCompensationFormatted ?? '0ev'}</li>
                 </ul>
-                {showSimulation && photo.filmSimulation &&
+                {showSimulation && photo.filmSimulation && (
                   <PhotoFilmSimulation
                     simulation={photo.filmSimulation}
                     prefetch={prefetchRelatedLinks}
-                  />}
-              </>}
-            <div className={clsx(
-              'flex gap-x-2 gap-y-baseline',
-              'md:flex-col md:justify-normal',
-            )}>
+                  />
+                )}
+              </>
+            )}
+            <div
+              className={clsx(
+                'flex gap-x-2 gap-y-baseline',
+                'md:flex-col md:justify-normal'
+              )}
+            >
               <PhotoDate
                 photo={photo}
                 className={clsx(
                   'text-medium',
                   // Prevent date collision with admin button
-                  !hasNonDateContent && isUserSignedIn && 'md:pr-7',
+                  !hasNonDateContent && isUserSignedIn && 'md:pr-7'
                 )}
               />
-              {shouldShare &&
+              {shouldShare && (
                 <ShareButton
                   className={clsx(
                     'md:translate-x-[-2.5px]',
-                    'translate-y-[1.5px] md:translate-y-0',
+                    'translate-y-[1.5px] md:translate-y-0'
                   )}
                   path={pathForPhotoShare({
                     photo,
@@ -533,10 +575,12 @@ export default function PhotoLarge({
                   })}
                   prefetch={prefetchRelatedLinks}
                   shouldScroll={shouldScrollOnShare}
-                />}
+                />
+              )}
             </div>
           </div>
-        </DivDebugBaselineGrid>}
+        </DivDebugBaselineGrid>
+      }
     />
   );
-};
+}
