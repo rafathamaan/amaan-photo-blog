@@ -359,7 +359,7 @@ export default function PhotoLarge({
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
         let closest: IntersectionObserverEntry | null = null;
         let minDistance = Infinity;
 
@@ -423,7 +423,7 @@ export default function PhotoLarge({
               className={clsx(
                 'transition-transform ease-in-out duration-500',
                 activeImage === imgRef.current
-                  ? 'scale-105 shadow-glow brightness-125 backdrop-brightness-200 backdrop-blur-2xl'
+                  ? 'scale-105 shadow-glow backdrop-brightness-200 backdrop-blur-2xl'
                   : 'scale-100'
               )}
             >
