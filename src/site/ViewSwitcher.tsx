@@ -56,6 +56,10 @@ export default function ViewSwitcher({
           icon={<IconSearch />}
           onClick={() => setIsCommandKOpen?.(true)}
         />
+        <SwitcherItem
+          icon={<IconHome/>}
+          onClick={() => window.location.href="https://www.arifgroup.in"}
+        />
       </Switcher>
     </div>
   );
