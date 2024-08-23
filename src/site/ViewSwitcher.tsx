@@ -2,6 +2,8 @@ import Switcher from '@/components/Switcher';
 import SwitcherItem from '@/components/SwitcherItem';
 import IconFeed from '@/site/IconFeed';
 import IconGrid from '@/site/IconGrid';
+import IconHome from '@/site/IconHome';
+
 import {
   PATH_ADMIN_PHOTOS,
   PATH_FEED_INFERRED,
